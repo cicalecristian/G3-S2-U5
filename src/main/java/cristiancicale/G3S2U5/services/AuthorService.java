@@ -1,5 +1,7 @@
 package cristiancicale.G3S2U5.services;
 
+import cristiancicale.G3S2U5.entities.Author;
+import cristiancicale.G3S2U5.payloads.NewAuthorPayload;
 import cristiancicale.G3S2U5.repositories.AuthorRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -12,5 +14,9 @@ public class AuthorService {
 
     public AuthorService(AuthorRepository authorRepository) {
         this.authorRepository = authorRepository;
+    }
+
+    public Author save(NewAuthorPayload body){
+        if (this.authorRepository.existsByEmail(body.getEmail()))throw new
     }
 }
