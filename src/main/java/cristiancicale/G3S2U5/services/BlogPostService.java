@@ -1,8 +1,10 @@
 package cristiancicale.G3S2U5.services;
 
+import cristiancicale.G3S2U5.entities.Author;
 import cristiancicale.G3S2U5.entities.BlogPost;
 import cristiancicale.G3S2U5.exceptions.NotFoundException;
 import cristiancicale.G3S2U5.payloads.NewBlogPostPayload;
+import cristiancicale.G3S2U5.repositories.AuthorRepository;
 import cristiancicale.G3S2U5.repositories.BlogPostRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
@@ -16,14 +18,21 @@ import org.springframework.stereotype.Service;
 public class BlogPostService {
 
     private final BlogPostRepository blogPostRepository;
+    private final AuthorRepository authorRepository;
 
-    public BlogPostService(BlogPostRepository blogPostRepository) {
+    public BlogPostService(BlogPostRepository blogPostRepository, AuthorRepository authorRepository) {
         this.blogPostRepository = blogPostRepository;
+        this.authorRepository = authorRepository;
     }
 
     public BlogPost save(NewBlogPostPayload body) {
 
+        Author author = authorRepository.findById(body.getAuthorId())
+                .orElseThrow(() -> new NotFoundException(body.getAuthorId()));
+
         BlogPost newBlogPost = new BlogPost(body.getTitolo(), body.getCategoria(), body.getContenuto(), body.getTempoDiLettura());
+        newBlogPost.setAuthor(author);
+
         BlogPost savedBlogPost = this.blogPostRepository.save(newBlogPost);
 
         log.info("Il post con id " + savedBlogPost.getId() + "è stato salvato correttamente");
