@@ -1,23 +1,43 @@
 package cristiancicale.G3S2U5.entities;
 
-import lombok.Getter;
-import lombok.Setter;
-import lombok.ToString;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.OneToMany;
+import jakarta.persistence.Table;
+import lombok.*;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
 
+@Entity
+@Table(name = "authors")
+@NoArgsConstructor
 @Getter
 @Setter
 @ToString
 public class Author {
 
+    @Setter(AccessLevel.NONE)
     private long id;
+
+    @Column(nullable = false)
     private String nome;
+
+    @Column(nullable = false)
     private String cognome;
+
+    @Column(nullable = false)
     private String email;
+
+    @Column(name = "data_di_nascita", nullable = false)
     private LocalDate dataDiNascita;
+
     private String avatar;
+
+    @OneToMany(mappedBy = "author")
+    private List<BlogPost> blogPosts = new ArrayList<>();
 
     public Author(String nome, String cognome, String email, LocalDate dataDiNascita) {
         this.nome = nome;
