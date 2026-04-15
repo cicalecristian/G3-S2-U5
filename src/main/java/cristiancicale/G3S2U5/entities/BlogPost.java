@@ -13,6 +13,8 @@ import java.util.Random;
 @ToString
 public class BlogPost {
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Setter(AccessLevel.NONE)
     private long id;
 
